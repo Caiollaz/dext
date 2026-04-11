@@ -10,6 +10,7 @@ import {
   Timer,
   Regex,
   Braces,
+  Send,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import styles from './sidebar.module.css';
@@ -24,6 +25,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   timer: Timer,
   regex: Regex,
   braces: Braces,
+  send: Send,
 };
 
 interface SidebarProps {
@@ -54,7 +56,7 @@ export function Sidebar({ activeTool, onToolSelect }: SidebarProps) {
           </div>
           <div className={styles.sysRow}>
             <span className={styles.sysKey}>VERSION:</span>
-            <span className={styles.sysValue}>v1.0.0</span>
+            <span className={styles.sysValue}>v2.0.0</span>
           </div>
         </div>
 

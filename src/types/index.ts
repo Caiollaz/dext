@@ -1,4 +1,4 @@
-export type ToolType = 'jwt-decoder' | 'json-diff' | 'base64' | 'uuid-generator' | 'hash-generator' | 'url-encoder' | 'timestamp-converter' | 'regex-tester' | 'json-formatter';
+export type ToolType = 'jwt-decoder' | 'json-diff' | 'base64' | 'uuid-generator' | 'hash-generator' | 'url-encoder' | 'timestamp-converter' | 'regex-tester' | 'json-formatter' | 'http-runner';
 
 export interface HistoryEntry {
   tool: ToolType;
@@ -68,5 +68,11 @@ export const TOOLS: ToolConfig[] = [
     label: 'JSON FORMAT',
     icon: 'braces',
     description: 'Beautify, minify and validate JSON data',
+  },
+  {
+    id: 'http-runner',
+    label: 'HTTP RUNNER',
+    icon: 'send',
+    description: 'Send HTTP requests with full control (desktop only)',
   },
 ];

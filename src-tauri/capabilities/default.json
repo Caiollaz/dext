@@ -1,0 +1,24 @@
+{
+  "identifier": "default",
+  "description": "Default capabilities for dev-toolsbox",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "shell:allow-open",
+    "http:default",
+    {
+      "identifier": "http:allow-fetch",
+      "allow": [
+        {
+          "url": "http://**"
+        },
+        {
+          "url": "https://**"
+        }
+      ]
+    },
+    "http:allow-fetch-cancel",
+    "http:allow-fetch-read-body",
+    "http:allow-fetch-send"
+  ]
+}

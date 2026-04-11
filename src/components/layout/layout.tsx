@@ -11,6 +11,7 @@ import { UrlEncoderTool } from '../tools/url-encoder-tool';
 import { TimestampConverterTool } from '../tools/timestamp-converter-tool';
 import { RegexTesterTool } from '../tools/regex-tester-tool';
 import { JsonFormatterTool } from '../tools/json-formatter-tool';
+import { HttpRunnerTool } from '../tools/http-runner-tool';
 import styles from './layout.module.css';
 
 export function Layout() {
@@ -36,6 +37,8 @@ export function Layout() {
         return <RegexTesterTool />;
       case 'json-formatter':
         return <JsonFormatterTool />;
+      case 'http-runner':
+        return <HttpRunnerTool />;
     }
   };
 
