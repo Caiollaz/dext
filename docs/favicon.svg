@@ -1,4 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-  <rect width="32" height="32" fill="#00FF88" rx="4"/>
-  <text x="16" y="23" text-anchor="middle" font-family="monospace" font-size="20" font-weight="700" fill="#0C0C0C">D</text>
+  <rect x="2" y="2" width="28" height="28" rx="6" fill="#070707"/>
+  <g transform="translate(7, 7) scale(0.75)">
+    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" fill="none" stroke="#00FF88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="7.5 4.21 12 6.81 16.5 4.21" fill="none" stroke="#00FF88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="7.5 19.79 7.5 14.6 3 12" fill="none" stroke="#00FF88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="21 12 16.5 14.6 16.5 19.79" fill="none" stroke="#00FF88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="3.27 6.96 12 12.01 20.73 6.96" fill="none" stroke="#00FF88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="12" x2="12" y1="22.08" y2="12" stroke="#00FF88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
 </svg>
