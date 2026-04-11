@@ -1,6 +1,30 @@
 import type { ToolType } from '../../types';
 import { TOOLS } from '../../types';
+import {
+  KeyRound,
+  GitCompare,
+  FileCode,
+  Hash,
+  Shield,
+  Link,
+  Timer,
+  Regex,
+  Braces,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import styles from './sidebar.module.css';
+
+const ICON_MAP: Record<string, LucideIcon> = {
+  'key-round': KeyRound,
+  'git-compare': GitCompare,
+  'file-code': FileCode,
+  hash: Hash,
+  shield: Shield,
+  link: Link,
+  timer: Timer,
+  regex: Regex,
+  braces: Braces,
+};
 
 interface SidebarProps {
   activeTool: ToolType;
@@ -36,16 +60,21 @@ export function Sidebar({ activeTool, onToolSelect }: SidebarProps) {
 
         {/* Navigation */}
         <nav className={styles.nav}>
-          {TOOLS.map((tool) => (
-            <button
-              key={tool.id}
-              className={`${styles.navItem} ${activeTool === tool.id ? styles.navItemActive : ''}`}
-              onClick={() => onToolSelect(tool.id)}
-            >
-              <span className={styles.navIcon}>{tool.icon}</span>
-              <span className={styles.navText}>{tool.label}</span>
-            </button>
-          ))}
+          {TOOLS.map((tool) => {
+            const IconComponent = ICON_MAP[tool.icon];
+            return (
+              <button
+                key={tool.id}
+                className={`${styles.navItem} ${activeTool === tool.id ? styles.navItemActive : ''}`}
+                onClick={() => onToolSelect(tool.id)}
+              >
+                <span className={styles.navIcon}>
+                  {IconComponent ? <IconComponent size={16} /> : tool.icon}
+                </span>
+                <span className={styles.navText}>{tool.label}</span>
+              </button>
+            );
+          })}
         </nav>
       </div>
 

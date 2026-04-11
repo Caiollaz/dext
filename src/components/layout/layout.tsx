@@ -6,6 +6,11 @@ import { Base64Tool } from '../tools/base64-tool';
 import { JwtDecoderTool } from '../tools/jwt-decoder-tool';
 import { UuidGeneratorTool } from '../tools/uuid-generator-tool';
 import { JsonDiffTool } from '../tools/json-diff-tool';
+import { HashGeneratorTool } from '../tools/hash-generator-tool';
+import { UrlEncoderTool } from '../tools/url-encoder-tool';
+import { TimestampConverterTool } from '../tools/timestamp-converter-tool';
+import { RegexTesterTool } from '../tools/regex-tester-tool';
+import { JsonFormatterTool } from '../tools/json-formatter-tool';
 import styles from './layout.module.css';
 
 export function Layout() {
@@ -21,6 +26,16 @@ export function Layout() {
         return <UuidGeneratorTool />;
       case 'json-diff':
         return <JsonDiffTool />;
+      case 'hash-generator':
+        return <HashGeneratorTool />;
+      case 'url-encoder':
+        return <UrlEncoderTool />;
+      case 'timestamp-converter':
+        return <TimestampConverterTool />;
+      case 'regex-tester':
+        return <RegexTesterTool />;
+      case 'json-formatter':
+        return <JsonFormatterTool />;
     }
   };
 

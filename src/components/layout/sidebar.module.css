@@ -112,8 +112,12 @@
 }
 
 .navIcon {
-  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--text-secondary);
+  width: 16px;
+  height: 16px;
 }
 
 .navText {
