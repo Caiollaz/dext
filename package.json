@@ -1,7 +1,7 @@
 {
   "name": "dext",
   "private": true,
-  "version": "2.0.1",
+  "version": "2.0.4",
   "type": "module",
   "description": "A collection of essential local developer tools — JWT Decoder, Base64, UUID Generator, JSON Diff. All offline, zero backend, blazing fast.",
   "scripts": {

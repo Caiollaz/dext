@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/niconiahi/schemas/master/tauri-v2.json",
   "productName": "Dext",
-  "version": "2.0.1",
+  "version": "2.0.4",
   "identifier": "com.dext.app",
   "build": {
     "beforeDevCommand": "npm run dev",

@@ -81,16 +81,8 @@ a {
 }
 
 .logo-mark {
-  width: 28px;
-  height: 28px;
-  background: var(--accent);
-  color: var(--bg-main);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  font-size: 14px;
-  font-weight: 700;
+  height: 20px;
+  width: auto;
 }
 
 .logo-text {
@@ -328,15 +320,8 @@ a {
 }
 
 .mock-mark {
-  width: 20px;
-  height: 20px;
-  background: var(--accent);
-  color: var(--bg-main);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: 700;
+  height: 14px;
+  width: auto;
 }
 
 .mock-logo-text {
@@ -714,9 +699,8 @@ a {
 }
 
 .footer-logo-icon {
-  width: 20px;
-  height: 20px;
-  background: var(--accent);
+  height: 16px;
+  width: auto;
 }
 
 .footer-logo-text {
