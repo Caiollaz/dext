@@ -27,3 +27,4 @@ Thumbs.db
 # Design exports (temp)
 *.png
 !src-tauri/icons/*.png
+!docs/screenshots/*.png
