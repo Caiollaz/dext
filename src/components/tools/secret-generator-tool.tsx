@@ -77,7 +77,11 @@ export function SecretGeneratorTool() {
               type="number"
               className={styles.lengthInput}
               value={length}
-              onChange={(e) => setLength(Math.max(4, Math.min(256, parseInt(e.target.value) || 32)))}
+              onChange={(e) => {
+                const newLength = Math.max(4, Math.min(256, parseInt(e.target.value) || 32));
+                setLength(newLength);
+                setCurrent(generateSecret(secretType, newLength));
+              }}
               min={4}
               max={256}
             />

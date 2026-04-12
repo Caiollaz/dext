@@ -29,7 +29,7 @@
 
 .secondary {
   background: var(--bg-card);
-  color: var(--text-primary);
+  color: var(--text-secondary);
   border: 1px solid var(--border);
   font-weight: 600;
 }
