@@ -17,7 +17,12 @@ pub fn run() {
             commands::docker_manager::docker_start,
             commands::docker_manager::docker_stop,
             commands::docker_manager::docker_restart,
+            commands::docker_manager::docker_remove,
             commands::docker_manager::docker_logs,
+            commands::docker_manager::docker_volume_list,
+            commands::docker_manager::docker_volume_remove,
+            commands::docker_manager::docker_image_list,
+            commands::docker_manager::docker_image_remove,
             // Log Tail Viewer
             commands::log_watcher::log_read_file,
             commands::log_watcher::log_watch_start,

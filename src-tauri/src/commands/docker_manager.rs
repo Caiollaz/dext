@@ -1,4 +1,4 @@
-use bollard::container::{ListContainersOptions, StartContainerOptions, StopContainerOptions, LogsOptions};
+use bollard::container::{ListContainersOptions, StartContainerOptions, StopContainerOptions, LogsOptions, RemoveContainerOptions};
 use bollard::Docker;
 use futures_util::StreamExt;
 use serde::Serialize;
@@ -22,10 +22,30 @@ pub struct DockerStats {
     pub total: usize,
 }
 
+#[derive(Debug, Serialize, Clone)]
+pub struct VolumeInfo {
+    pub name: String,
+    pub driver: String,
+    pub mountpoint: String,
+    pub created: String,
+    pub labels: String,
+}
+
+#[derive(Debug, Serialize, Clone)]
+pub struct ImageInfo {
+    pub id: String,
+    pub repo_tags: Vec<String>,
+    pub size: u64,
+    pub created: i64,
+    pub containers: i64,
+}
+
 fn get_docker() -> Result<Docker, String> {
     Docker::connect_with_local_defaults()
         .map_err(|e| format!("Docker connection failed: {}. Is Docker running?", e))
 }
+
+// ── Containers ──────────────────────────────────────
 
 #[tauri::command]
 pub async fn docker_list() -> Result<(Vec<ContainerInfo>, DockerStats), String> {
@@ -128,6 +148,20 @@ pub async fn docker_restart(container_id: String) -> Result<(), String> {
 }
 
 #[tauri::command]
+pub async fn docker_remove(container_id: String, force: bool) -> Result<(), String> {
+    let docker = get_docker()?;
+    let options = RemoveContainerOptions {
+        force,
+        v: true, // also remove anonymous volumes attached to the container
+        ..Default::default()
+    };
+    docker
+        .remove_container(&container_id, Some(options))
+        .await
+        .map_err(|e| format!("Failed to remove container: {}", e))
+}
+
+#[tauri::command]
 pub async fn docker_logs(container_id: String, lines: u64) -> Result<Vec<String>, String> {
     let docker = get_docker()?;
 
@@ -153,4 +187,90 @@ pub async fn docker_logs(container_id: String, lines: u64) -> Result<Vec<String>
     }
 
     Ok(log_lines)
+}
+
+// ── Volumes ─────────────────────────────────────────
+
+#[tauri::command]
+pub async fn docker_volume_list() -> Result<Vec<VolumeInfo>, String> {
+    let docker = get_docker()?;
+
+    let response = docker
+        .list_volumes::<String>(None)
+        .await
+        .map_err(|e| format!("Failed to list volumes: {}", e))?;
+
+    let volumes = response
+        .volumes
+        .unwrap_or_default()
+        .into_iter()
+        .map(|v| {
+            let labels = v
+                .labels
+                .iter()
+                .map(|(k, val)| format!("{}={}", k, val))
+                .collect::<Vec<_>>()
+                .join(", ");
+
+            VolumeInfo {
+                name: v.name,
+                driver: v.driver,
+                mountpoint: v.mountpoint,
+                created: v.created_at.unwrap_or_default(),
+                labels,
+            }
+        })
+        .collect();
+
+    Ok(volumes)
+}
+
+#[tauri::command]
+pub async fn docker_volume_remove(name: String, force: bool) -> Result<(), String> {
+    let docker = get_docker()?;
+    docker
+        .remove_volume(&name, Some(bollard::volume::RemoveVolumeOptions { force }))
+        .await
+        .map_err(|e| format!("Failed to remove volume: {}", e))
+}
+
+// ── Images ──────────────────────────────────────────
+
+#[tauri::command]
+pub async fn docker_image_list() -> Result<Vec<ImageInfo>, String> {
+    let docker = get_docker()?;
+
+    let images = docker
+        .list_images::<String>(None)
+        .await
+        .map_err(|e| format!("Failed to list images: {}", e))?;
+
+    let infos: Vec<ImageInfo> = images
+        .into_iter()
+        .map(|img| {
+            ImageInfo {
+                id: img.id.chars().skip(7).take(12).collect(), // strip "sha256:" prefix
+                repo_tags: img.repo_tags,
+                size: img.size as u64,
+                created: img.created,
+                containers: img.containers,
+            }
+        })
+        .collect();
+
+    Ok(infos)
+}
+
+#[tauri::command]
+pub async fn docker_image_remove(image_id: String, force: bool) -> Result<(), String> {
+    let docker = get_docker()?;
+    let options = bollard::image::RemoveImageOptions {
+        force,
+        noprune: false,
+    };
+    docker
+        .remove_image(&image_id, Some(options), None)
+        .await
+        .map_err(|e| format!("Failed to remove image: {}", e))?;
+    Ok(())
 }
