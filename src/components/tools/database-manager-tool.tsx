@@ -233,15 +233,6 @@ export function DatabaseManagerTool() {
 
   return (
     <div className={styles.container}>
-      {/* Header */}
-      <div className={styles.header}>
-        <span className={styles.label}>// TOOL_25</span>
-        <h1 className={styles.title}>DATABASE MANAGER</h1>
-        <span className={styles.subtitle}>
-          Connect to PostgreSQL, MySQL and SQLite — run queries and browse schemas
-        </span>
-      </div>
-
       {/* Connection Bar */}
       <div className={styles.connectionBar}>
         <div className={styles.dbTypeSelector}>
@@ -468,7 +459,7 @@ export function DatabaseManagerTool() {
           <PanelResizeHandle className={styles.panelResizeHandle} />
 
           {/* Right Panel */}
-          <Panel defaultSize={75}>
+          <Panel defaultSize={75} minSize={40}>
             <div className={styles.rightPanel}>
               {/* Query Editor */}
               <div className={styles.queryPanel}>

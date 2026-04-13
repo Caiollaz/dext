@@ -227,6 +227,23 @@ export function OpenVpnManagerTool() {
     setLogs([]);
   };
 
+  const handleBrowse = async () => {
+    try {
+      const { open } = await import('@tauri-apps/plugin-dialog');
+      const selected = await open({
+        title: 'Select OpenVPN Profile',
+        filters: [{ name: 'OpenVPN Config', extensions: ['ovpn', 'conf'] }],
+        multiple: false,
+        directory: false,
+      });
+      if (selected) {
+        setProfilePath(selected as string);
+      }
+    } catch {
+      // fallback: ignore if dialog unavailable
+    }
+  };
+
   const isConnected = status?.state === 'connected';
 
   // Desktop-only guard
@@ -256,7 +273,7 @@ export function OpenVpnManagerTool() {
           placeholder="Path to profile.ovpn..."
         />
         <div className={styles.actions}>
-          <button className={styles.btnAction} title="Browse">
+          <button className={styles.btnAction} onClick={handleBrowse} title="Browse">
             <FolderOpen size={14} />
             BROWSE
           </button>

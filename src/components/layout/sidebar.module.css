@@ -88,6 +88,15 @@
   border-radius: 2px;
 }
 
+/* Hide scrollbar when sidebar is collapsed but keep scrolling */
+.sidebarCollapsed .nav {
+  scrollbar-width: none;
+}
+
+.sidebarCollapsed .nav::-webkit-scrollbar {
+  display: none;
+}
+
 /* Nav Groups */
 .navGroup {
   display: flex;

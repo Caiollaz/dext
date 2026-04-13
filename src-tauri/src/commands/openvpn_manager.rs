@@ -185,6 +185,213 @@ async fn get_tun_ip() -> String {
     String::new()
 }
 
+// --- openvpn3 integration ---
+
+/// Try to get session info from `openvpn3 sessions-list`
+/// Returns Some(OvpnStatus) if an active session is found
+async fn get_openvpn3_status() -> Option<OvpnStatus> {
+    let output = tokio::process::Command::new("openvpn3")
+        .args(["sessions-list"])
+        .output()
+        .await
+        .ok()?;
+
+    if !output.status.success() {
+        return None;
+    }
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+
+    // Parse the sessions-list output:
+    //         Path: /net/openvpn/v3/sessions/...
+    //      Created: 2026-04-13 13:44:57                       PID: 63766
+    //        Owner: ti-17                                  Device: tun0
+    //  Config name: /home/ti-17/vpn-profile.ovpn
+    // Connected to: udp:15.229.213.158:1592
+    //       Status: Connection, Client connected
+
+    let mut session_path = String::new();
+    let mut server = String::new();
+    let mut protocol = String::new();
+    let mut _config_name = String::new();
+    let mut device = String::new();
+    let mut status_text = String::new();
+    let mut created = String::new();
+
+    for line in stdout.lines() {
+        let trimmed = line.trim();
+
+        if let Some(val) = trimmed.strip_prefix("Path:") {
+            session_path = val.trim().to_string();
+        } else if let Some(val) = trimmed.strip_prefix("Created:") {
+            // "2026-04-13 13:44:57                       PID: 63766"
+            // Take just the timestamp part
+            let parts: Vec<&str> = val.split("PID:").collect();
+            created = parts[0].trim().to_string();
+        } else if trimmed.starts_with("Owner:") {
+            // "ti-17                                  Device: tun0"
+            if let Some(dev_part) = trimmed.split("Device:").nth(1) {
+                device = dev_part.trim().to_string();
+            }
+        } else if let Some(val) = trimmed.strip_prefix("Config name:") {
+            _config_name = val.trim().to_string();
+        } else if let Some(val) = trimmed.strip_prefix("Connected to:") {
+            // "udp:15.229.213.158:1592"
+            let conn = val.trim().to_string();
+            // Parse protocol and server
+            let parts: Vec<&str> = conn.splitn(2, ':').collect();
+            if parts.len() == 2 {
+                protocol = parts[0].to_uppercase();
+                // server part: "15.229.213.158:1592"
+                server = parts[1].to_string();
+            } else {
+                server = conn;
+            }
+        } else if let Some(val) = trimmed.strip_prefix("Status:") {
+            status_text = val.trim().to_string();
+        }
+    }
+
+    // No session found
+    if session_path.is_empty() {
+        return None;
+    }
+
+    // Check if status indicates connected
+    let is_connected = status_text.contains("Client connected");
+    if !is_connected {
+        return None;
+    }
+
+    // Get device-specific info
+    let local_ip = if !device.is_empty() {
+        get_device_ip(&device).await
+    } else {
+        get_tun_ip().await
+    };
+
+    let (bytes_sent, bytes_received) = if !device.is_empty() {
+        get_device_bytes(&device)
+    } else {
+        get_tun_bytes()
+    };
+
+    // Compute uptime from created timestamp
+    let uptime = compute_uptime(&created);
+
+    // Get stats from openvpn3 if session path is available
+    let stats = get_openvpn3_stats(&session_path).await;
+    let (final_bytes_sent, final_bytes_received) = if stats.is_some() {
+        let (s, r) = stats.unwrap();
+        if !s.is_empty() { (s, r) } else { (bytes_sent, bytes_received) }
+    } else {
+        (bytes_sent, bytes_received)
+    };
+
+    Some(OvpnStatus {
+        state: "connected".to_string(),
+        server,
+        local_ip,
+        remote_ip: String::new(), // openvpn3 doesn't expose remote IP separately
+        uptime,
+        bytes_sent: final_bytes_sent,
+        bytes_received: final_bytes_received,
+        protocol,
+    })
+}
+
+/// Get IP address for a specific network device
+async fn get_device_ip(device: &str) -> String {
+    let output = tokio::process::Command::new("ip")
+        .args(["addr", "show", "dev", device])
+        .output()
+        .await;
+
+    if let Ok(out) = output {
+        let stdout = String::from_utf8_lossy(&out.stdout);
+        for line in stdout.lines() {
+            let trimmed = line.trim();
+            if trimmed.starts_with("inet ") {
+                let parts: Vec<&str> = trimmed.split_whitespace().collect();
+                if parts.len() >= 2 {
+                    return parts[1].split('/').next().unwrap_or("").to_string();
+                }
+            }
+        }
+    }
+    String::new()
+}
+
+/// Get bytes from /proc/net/dev for a specific device
+fn get_device_bytes(device: &str) -> (String, String) {
+    let content = std::fs::read_to_string("/proc/net/dev").unwrap_or_default();
+    for line in content.lines() {
+        let trimmed = line.trim();
+        if trimmed.starts_with(&format!("{}:", device)) || trimmed.starts_with(device) {
+            let parts: Vec<&str> = trimmed.split_whitespace().collect();
+            if parts.len() >= 10 {
+                let rx = parts[1].parse::<u64>().unwrap_or(0);
+                let tx = parts[9].parse::<u64>().unwrap_or(0);
+                return (format_bytes(tx), format_bytes(rx));
+            }
+        }
+    }
+    ("0 B".to_string(), "0 B".to_string())
+}
+
+/// Compute uptime from a timestamp string like "2026-04-13 13:44:57"
+fn compute_uptime(created: &str) -> String {
+    if created.is_empty() {
+        return String::new();
+    }
+    if let Ok(start) = chrono::NaiveDateTime::parse_from_str(created, "%Y-%m-%d %H:%M:%S") {
+        let now = chrono::Local::now().naive_local();
+        let duration = now.signed_duration_since(start);
+        let secs = duration.num_seconds();
+        if secs < 0 {
+            return String::new();
+        }
+        let h = secs / 3600;
+        let m = (secs % 3600) / 60;
+        let s = secs % 60;
+        format!("{}h {:02}m {:02}s", h, m, s)
+    } else {
+        String::new()
+    }
+}
+
+/// Get byte stats from `openvpn3 session-stats`
+async fn get_openvpn3_stats(session_path: &str) -> Option<(String, String)> {
+    let output = tokio::process::Command::new("openvpn3")
+        .args(["session-stats", "--session-path", session_path])
+        .output()
+        .await
+        .ok()?;
+
+    if !output.status.success() {
+        return None;
+    }
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let mut bytes_in: u64 = 0;
+    let mut bytes_out: u64 = 0;
+
+    for line in stdout.lines() {
+        let trimmed = line.trim();
+        if let Some(val) = trimmed.strip_prefix("BYTES_IN") {
+            bytes_in = val.trim().parse().unwrap_or(0);
+        } else if let Some(val) = trimmed.strip_prefix("BYTES_OUT") {
+            bytes_out = val.trim().parse().unwrap_or(0);
+        }
+    }
+
+    if bytes_in > 0 || bytes_out > 0 {
+        Some((format_bytes(bytes_out), format_bytes(bytes_in)))
+    } else {
+        None
+    }
+}
+
 // --- Tauri Commands ---
 
 #[tauri::command]
@@ -245,7 +452,12 @@ pub async fn ovpn_disconnect() -> Result<String, String> {
 
 #[tauri::command]
 pub async fn ovpn_status(profile_path: String) -> Result<OvpnStatus, String> {
-    // Check if service is active
+    // First try openvpn3 sessions-list (detects any active VPN session)
+    if let Some(status) = get_openvpn3_status().await {
+        return Ok(status);
+    }
+
+    // Fallback: check systemctl service
     let output = tokio::process::Command::new("systemctl")
         .args(["is-active", service_name()])
         .output()
