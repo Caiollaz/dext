@@ -2390,7 +2390,7 @@
               "fill": "#6a6a6a",
               "textGrowth": "fixed-width",
               "width": 700,
-              "content": "17 essential local tools for developers organized in 6 categories.\nJWT Decoder, Base64, JSON Diff, Color Converter, Secret Generator,\ncURL Converter — all offline, zero backend, blazing fast.",
+              "content": "24 essential local tools for developers organized in 7 categories.\nJWT Decoder, Base64, JSON Diff, Docker Dashboard, Database Manager,\nSSL Inspector — all offline, zero backend, blazing fast.",
               "lineHeight": 1.7,
               "textAlign": "center",
               "fontFamily": "JetBrains Mono",
@@ -4603,121 +4603,188 @@
             },
             {
               "type": "frame",
-              "id": "ZhJzM",
-              "name": "CTA Buttons",
-              "gap": 12,
+              "id": "A9VVo",
+              "name": "Download Card",
+              "width": 560,
+              "fill": "#0A0A0A",
+              "stroke": {
+                "thickness": 1,
+                "fill": "#2f2f2f"
+              },
+              "layout": "vertical",
               "alignItems": "center",
               "children": [
                 {
                   "type": "frame",
-                  "id": "QHWPU",
-                  "name": "Btn Windows",
-                  "fill": "#00FF88",
-                  "gap": 8,
-                  "padding": [
-                    14,
-                    28
-                  ],
-                  "justifyContent": "center",
+                  "id": "WYuuE",
+                  "name": "Tab Bar",
+                  "width": "fill_container",
+                  "stroke": {
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "#2f2f2f"
+                  },
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "text",
-                      "id": "XkzHb",
-                      "name": "btnWinIcon",
-                      "fill": "#0C0C0C",
-                      "content": "↓",
-                      "fontFamily": "JetBrains Mono",
-                      "fontSize": 14,
-                      "fontWeight": "700"
+                      "type": "frame",
+                      "id": "E8529",
+                      "name": "Tab Windows",
+                      "fill": "#0A0A0A",
+                      "stroke": {
+                        "thickness": {
+                          "bottom": 2
+                        },
+                        "fill": "#00FF88"
+                      },
+                      "padding": [
+                        14,
+                        24
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "UTdLC",
+                          "name": "btnPTxt",
+                          "fill": "#FFFFFF",
+                          "content": "Windows",
+                          "fontFamily": "JetBrains Mono",
+                          "fontSize": 12,
+                          "fontWeight": "600"
+                        }
+                      ]
                     },
                     {
-                      "type": "text",
-                      "id": "o1c4B",
-                      "name": "btnWinTxt",
-                      "fill": "#0C0C0C",
-                      "content": "Download for Windows",
-                      "fontFamily": "JetBrains Mono",
-                      "fontSize": 13,
-                      "fontWeight": "600"
+                      "type": "frame",
+                      "id": "yOx9y",
+                      "name": "Tab macOS",
+                      "fill": "#0A0A0A",
+                      "stroke": {
+                        "thickness": 0,
+                        "fill": "#0A0A0A"
+                      },
+                      "padding": [
+                        14,
+                        24
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "zyH2n",
+                          "name": "btnSTxt",
+                          "fill": "#6a6a6a",
+                          "content": "macOS",
+                          "fontFamily": "JetBrains Mono",
+                          "fontSize": 12,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Socm3",
+                      "name": "linTab",
+                      "fill": "#0A0A0A",
+                      "stroke": {
+                        "thickness": 0,
+                        "fill": "#0A0A0A"
+                      },
+                      "padding": [
+                        14,
+                        24
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "hLsBl",
+                          "name": "btnSTxt",
+                          "fill": "#6a6a6a",
+                          "content": "Linux",
+                          "fontFamily": "JetBrains Mono",
+                          "fontSize": 12,
+                          "fontWeight": "500"
+                        }
+                      ]
                     }
                   ]
                 },
                 {
                   "type": "frame",
-                  "id": "e89eF",
-                  "name": "Btn macOS",
+                  "id": "wLPsP",
+                  "name": "Windows Panel",
+                  "width": "fill_container",
                   "fill": "#0A0A0A",
                   "stroke": {
-                    "thickness": 1,
-                    "fill": "#2f2f2f"
+                    "thickness": 0,
+                    "fill": "#0A0A0A"
                   },
-                  "gap": 8,
-                  "padding": [
-                    14,
-                    28
-                  ],
-                  "justifyContent": "center",
+                  "layout": "vertical",
+                  "gap": 24,
+                  "padding": 32,
                   "alignItems": "center",
                   "children": [
                     {
                       "type": "text",
-                      "id": "ZO5fA",
-                      "name": "btnMacIcon",
-                      "fill": "#FFFFFF",
-                      "content": "↓",
+                      "id": "GB0sI",
+                      "name": "c1Title",
+                      "fill": "#8A8A8A",
+                      "content": "Intel / AMD",
+                      "textAlign": "center",
                       "fontFamily": "JetBrains Mono",
-                      "fontSize": 14,
-                      "fontWeight": "700"
+                      "fontSize": 11,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "E6wIB",
+                      "name": "Btn Download",
+                      "width": "fill_container",
+                      "fill": "#00FF88",
+                      "gap": 8,
+                      "padding": [
+                        16,
+                        28
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "OKuxj",
+                          "name": "btnPIcon",
+                          "width": 16,
+                          "height": 16,
+                          "iconFontName": "download",
+                          "iconFontFamily": "lucide",
+                          "fill": "#0C0C0C"
+                        },
+                        {
+                          "type": "text",
+                          "id": "MjAsM",
+                          "name": "btnPTxt",
+                          "fill": "#0C0C0C",
+                          "content": "Download .exe",
+                          "fontFamily": "JetBrains Mono",
+                          "fontSize": 13,
+                          "fontWeight": "700"
+                        }
+                      ]
                     },
                     {
                       "type": "text",
-                      "id": "tK7Ss",
-                      "name": "btnMacTxt",
-                      "fill": "#FFFFFF",
-                      "content": "macOS",
+                      "id": "EmC9w",
+                      "name": "c1Desc",
+                      "fill": "#6a6a6a",
+                      "content": "or download .msi installer",
+                      "lineHeight": 1,
+                      "textAlign": "center",
                       "fontFamily": "JetBrains Mono",
-                      "fontSize": 13,
-                      "fontWeight": "500"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "MmX2K",
-                  "name": "Btn Linux",
-                  "fill": "#0A0A0A",
-                  "stroke": {
-                    "thickness": 1,
-                    "fill": "#2f2f2f"
-                  },
-                  "gap": 8,
-                  "padding": [
-                    14,
-                    28
-                  ],
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "bJDgO",
-                      "name": "btnLinuxIcon",
-                      "fill": "#FFFFFF",
-                      "content": "↓",
-                      "fontFamily": "JetBrains Mono",
-                      "fontSize": 14,
-                      "fontWeight": "700"
-                    },
-                    {
-                      "type": "text",
-                      "id": "bD7qT",
-                      "name": "btnLinuxTxt",
-                      "fill": "#FFFFFF",
-                      "content": "Linux",
-                      "fontFamily": "JetBrains Mono",
-                      "fontSize": 13,
-                      "fontWeight": "500"
+                      "fontSize": 11,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -4728,7 +4795,7 @@
               "id": "lOPAj",
               "name": "ctaVersion",
               "fill": "#8A8A8A",
-              "content": "v2.1.0  ·  ~8MB  ·  MIT License",
+              "content": "v2.2.1  ·  ~8MB  ·  MIT License",
               "fontFamily": "JetBrains Mono",
               "fontSize": 10,
               "fontWeight": "normal"
