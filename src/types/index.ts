@@ -21,7 +21,8 @@ export type ToolType =
   | 'ssl-inspector'
   | 'websocket-tester'
   | 'docker-dashboard'
-  | 'log-tail-viewer';
+  | 'log-tail-viewer'
+  | 'database-manager';
 
 export type ToolGroupId =
   | 'encode-decode'
@@ -230,5 +231,12 @@ export const TOOLS: ToolConfig[] = [
     icon: 'plug',
     description: 'Connect to WebSocket servers, send and receive messages in real-time',
     group: 'network',
+  },
+  {
+    id: 'database-manager',
+    label: 'DATABASE',
+    icon: 'cylinder',
+    description: 'Connect to PostgreSQL, MySQL and SQLite databases, run queries and browse schemas (desktop only)',
+    group: 'devops',
   },
 ];

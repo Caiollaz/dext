@@ -1,10 +1,13 @@
 mod commands;
 
+use commands::database_manager::DbState;
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_http::init())
+        .manage(DbState::new())
         .invoke_handler(tauri::generate_handler![
             // Port Scanner
             commands::port_scanner::scan_ports,
@@ -27,6 +30,14 @@ pub fn run() {
             commands::log_watcher::log_read_file,
             commands::log_watcher::log_watch_start,
             commands::log_watcher::log_watch_stop,
+            // Database Manager
+            commands::database_manager::db_test_connection,
+            commands::database_manager::db_connect,
+            commands::database_manager::db_disconnect,
+            commands::database_manager::db_execute_query,
+            commands::database_manager::db_list_databases,
+            commands::database_manager::db_list_tables,
+            commands::database_manager::db_describe_table,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

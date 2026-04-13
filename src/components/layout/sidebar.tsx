@@ -26,6 +26,7 @@ import {
   Plug,
   Container,
   FileText,
+  Cylinder,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import styles from './sidebar.module.css';
@@ -54,6 +55,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   globe: Globe,
   plug: Plug,
   container: Container,
+  cylinder: Cylinder,
 };
 
 interface SidebarProps {
@@ -161,7 +163,7 @@ export function Sidebar({ activeTool, onToolSelect }: SidebarProps) {
           <p className={styles.localDesc}>
             No external backend. All data stays on your machine.
           </p>
-          <span className={styles.version}>v2.1.0</span>
+          <span className={styles.version}>v2.2.1</span>
         </div>
       </div>
     </aside>
