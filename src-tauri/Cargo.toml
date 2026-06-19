@@ -1,6 +1,6 @@
 [package]
 name = "Dext"
-version = "2.3.1"
+version = "2.4.0"
 description = "A collection of essential local developer tools"
 authors = ["dext"]
 edition = "2021"

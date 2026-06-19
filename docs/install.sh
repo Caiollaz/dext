@@ -4,7 +4,7 @@
 
 set -e
 
-VERSION="2.3.1"
+VERSION="2.4.0"
 REPO="Caiollaz/dext"
 BASE_URL="https://github.com/${REPO}/releases/download/v${VERSION}"
 INSTALL_DIR="${HOME}/.local/bin"
