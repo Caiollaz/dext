@@ -27,6 +27,7 @@ import { DockerDashboardTool } from '../tools/docker-dashboard-tool';
 import { LogTailViewerTool } from '../tools/log-tail-viewer-tool';
 import { DatabaseManagerTool } from '../tools/database-manager-tool';
 import { OpenVpnManagerTool } from '../tools/openvpn-manager-tool';
+import { PasswordManagerTool } from '../tools/password-manager-tool';
 import styles from './layout.module.css';
 
 export function Layout() {
@@ -85,6 +86,8 @@ export function Layout() {
         return <DatabaseManagerTool />;
       case 'openvpn-manager':
         return <OpenVpnManagerTool />;
+      case 'password-manager':
+        return <PasswordManagerTool />;
     }
   };
 

@@ -28,6 +28,7 @@ import {
   FileText,
   Cylinder,
   ShieldAlert,
+  LockKeyhole,
   PanelLeftClose,
   PanelLeftOpen,
 } from 'lucide-react';
@@ -60,6 +61,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   container: Container,
   cylinder: Cylinder,
   'shield-alert': ShieldAlert,
+  'lock-keyhole': LockKeyhole,
 };
 
 interface SidebarProps {

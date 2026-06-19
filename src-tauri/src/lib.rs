@@ -1,6 +1,7 @@
 mod commands;
 
 use commands::database_manager::DbState;
+use commands::password_manager::PwState;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -9,6 +10,7 @@ pub fn run() {
         .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_dialog::init())
         .manage(DbState::new())
+        .manage(PwState::new())
         .invoke_handler(tauri::generate_handler![
             // Port Scanner
             commands::port_scanner::scan_ports,
@@ -46,6 +48,19 @@ pub fn run() {
             commands::openvpn_manager::ovpn_get_logs,
             commands::openvpn_manager::ovpn_watch_start,
             commands::openvpn_manager::ovpn_watch_stop,
+            // Password Manager
+            commands::password_manager::pm_vault_exists,
+            commands::password_manager::pm_is_unlocked,
+            commands::password_manager::pm_create_vault,
+            commands::password_manager::pm_unlock,
+            commands::password_manager::pm_lock,
+            commands::password_manager::pm_list_items,
+            commands::password_manager::pm_save_item,
+            commands::password_manager::pm_delete_item,
+            commands::password_manager::pm_change_master,
+            commands::password_manager::pm_generate_totp,
+            commands::password_manager::pm_generate_password,
+            commands::password_manager::pm_import_bitwarden,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

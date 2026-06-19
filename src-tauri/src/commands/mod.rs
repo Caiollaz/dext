@@ -5,3 +5,4 @@ pub mod docker_manager;
 pub mod log_watcher;
 pub mod database_manager;
 pub mod openvpn_manager;
+pub mod password_manager;

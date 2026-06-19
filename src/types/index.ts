@@ -23,7 +23,8 @@ export type ToolType =
   | 'docker-dashboard'
   | 'log-tail-viewer'
   | 'database-manager'
-  | 'openvpn-manager';
+  | 'openvpn-manager'
+  | 'password-manager';
 
 export type ToolGroupId =
   | 'encode-decode'
@@ -136,6 +137,13 @@ export const TOOLS: ToolConfig[] = [
     label: 'MOCK GEN',
     icon: 'database',
     description: 'Generate mock data from interface definitions',
+    group: 'generators',
+  },
+  {
+    id: 'password-manager',
+    label: 'PASSWORDS',
+    icon: 'lock-keyhole',
+    description: 'Local encrypted password vault with TOTP — Argon2id + XChaCha20 (desktop only)',
     group: 'generators',
   },
   // CONVERTERS
